@@ -1,0 +1,141 @@
+Type Node : record < huruf : char
+					 *next : Node
+				   >
+
+Procedure init
+{ menentukan nilai dari head }
+{ k. awal : sembarang }
+{ k. akhir : objek head yang sudah di beri nilai }
+
+Deklarasi
+
+Deskripsi
+head <-- NULL
+
+
+Function isEmpty() --> boolean
+{ menentukan nilai dari isEmpty }
+
+Deklarasi
+
+Deskripsi
+if head = NULL then
+	return true
+else
+	return false
+endif
+
+
+Procedure tambah_belakang(input huruf_baru : char)
+{ menambahkan data pada linked list }
+{ k. awal : sembarang }
+{ k. akhir : linked list ter-update }
+
+Deklarasi
+*baru : Node
+*bantu : Node
+
+Deskripsi
+baru <-- new Node
+baru->next <-- NULL
+baru->huruf <-- huruf_baru
+if isEmpty then
+	head <-- baru
+	head->next <-- NULL
+else
+	bantu <-- head
+	while bantu->next != NULL do
+		bantu <-- bantu->next
+	endwhile
+	bantu->next <-- baru
+endif
+
+
+Procedure cek_frek
+{ menentukan frekuensi huruf muncul dan pada indeks ke-berapa }
+{ k. awal : sembarang }
+{ k. akhir : frekuensi huruf muncul dan pada indeks ke-berapa }
+
+Deklarasi
+*bantu : Node
+i : integer
+index_str : integer
+index_arr : integer
+count : integer
+simpan : array[1..200] of integer
+
+Deskripsi
+for i <-- 1 to len_alp do
+	index_str <-- 1
+	index_arr <-- 1
+	count <-- 0
+	bantu <-- head
+	if alphabets[i] = bantu->huruf then
+		simpan[index_arr] <-- index_str
+		index_arr <-- index_arr + 1
+		count <-- count + 1
+	endif
+	while bantu != NULL
+		index_str <-- index_str + 1
+		bantu <-- bantu->next
+		if bantu != NULL then
+			if alphabets[i] = bantu->huruf then
+				simpan[index_arr] <-- index_str
+				index_arr <-- index_arr + 1
+				count <-- count + 1
+			endif
+		endif
+	endwhile
+	if count > 0 then
+		write(alphabets[i], ': ', count, ' kali pada ')
+		for i <-- 1 to count do
+			write(simpan[i], ', ')
+		endfor
+	endif
+endfor
+
+
+Algoritma Menghitung_dan_mengetahui_frekuensi_karakter_dalam_string
+{ menentukan frekuensi kemunculan tiap-tiap huruf pada string dan menentukan indeks nya }
+
+Deklarasi
+alphabets : array[1..27] of char
+len_alp : integer
+*head : Node
+str : array[1..200] of char
+sub : integer
+length : integer
+i : integer
+j : integer
+
+Deskripsi
+alphabets <-- "abcdefghijklmnopqrstuvwxyz"
+len_alp <-- 26
+sub <-- 0
+read(str)
+length <-- strlen(str)
+
+if length > 100 then
+	write('Masukkan melebihi 100 karakter')
+	return 0
+else
+	if str[1] = '.' then
+		write('Masukkan tidak boleh diawali karakter '.' (titik)')
+		return 0
+	endif
+endif
+for i <-- 1 to length do
+	if str[i] = ' ' then
+		for j <-- i to length-1 do
+			str[j] <-- str[j+1]
+		endfor
+		sub <-- sub + 1
+	endif
+endfor
+length <-- length - sub
+init
+for i <-- 1 to length do
+	tambah_belakang(tolower(str[i]))
+endfor
+
+cek_frek
